@@ -91,6 +91,17 @@ test('cancelling a lobby refunds whole entries and collects no fee', t => {
   const { e } = fixture(t); e.cancelLobby('m');
   assert.equal(e.balance('wallet:p0'), 1000); assert.equal(e.balance('wallet:p1'), 1000); assert.equal(e.balance('house:fees'), 0); e.audit();
 });
+test('leave lobby returns only that user entry and can be safely replayed', t => {
+  const { e } = fixture(t); e.leaveLobby('m', 'p0', 'leave'); const before = e.snapshot();
+  e.leaveLobby('m', 'p0', 'leave'); assert.deepEqual(e.snapshot(), before);
+  assert.equal(e.balance('wallet:p0'), 1000); assert.equal(e.balance('wallet:p1'), 0);
+  assert.equal(e.snapshot().matches.m.players.p0, undefined);
+  e.join('m', 'p0', 'rejoin'); assert.equal(e.balance('wallet:p0'), 0); e.audit();
+});
+test('leave is rejected once a match starts', t => {
+  const { e } = fixture(t); e.start('m'); const before = e.snapshot();
+  rejects(() => e.leaveLobby('m', 'p0', 'leave'), 'cannot_leave'); assert.deepEqual(e.snapshot(), before);
+});
 test('active match cancellation is explicitly unsupported, not a partial refund', t => {
   const { e } = fixture(t); e.start('m'); const before = e.snapshot();
   rejects(() => e.cancelLobby('m'), 'only_lobby_cancel_supported'); assert.deepEqual(e.snapshot(), before);

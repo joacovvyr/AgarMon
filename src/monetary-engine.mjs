@@ -114,6 +114,15 @@ export class MoneyEngine {
     const unit = m.entryCents / 200;
     while (value > 0) { const n = Math.min(unit, value); m.pellets['gold-' + (++m.counter)] = n; value -= n; }
   }
+  leaveLobby(matchId, userId, requestId) {
+    id(userId); id(requestId);
+    return this.#atomic('leave:' + userId + ':' + requestId, [matchId, userId], s => {
+      const m = this.#match(s, matchId);
+      if (m.phase !== 'lobby' || m.players[userId]?.status !== 'queued') throw Error('cannot_leave');
+      move(s, account(m, 'entry', userId), wallet(userId), m.entryCents, 'leave_lobby_refund');
+      delete m.players[userId]; return { refundedCents: m.entryCents };
+    });
+  }
   start(matchId) {
     return this.#atomic('start:' + matchId, [matchId], s => {
       const m = this.#match(s, matchId), players = Object.keys(m.players);

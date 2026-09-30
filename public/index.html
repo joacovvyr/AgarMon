@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101316">
+  <title>AgarMon · Salas y billetera</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" type="module"></script>
+</head>
+<body>
+  <div class="notice"><span class="notice-dot"></span> PROTOTIPO WEB <span class="notice-separator">/</span> Fondos simulados. Sin depósitos ni retiros reales.</div>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="AgarMon, inicio"><span class="brand-mark">a<span></span></span>Agar<span class="brand-accent">Mon</span></a>
+    <nav aria-label="Principal"><a href="#salas" class="nav-active">Salas</a><a href="#billetera">Billetera</a><a href="#movimientos">Movimientos</a></nav>
+    <div class="account"><span id="account-name" class="account-name"></span><button id="account-button" class="button button-outline">Ingresar <span>↗</span></button></div>
+  </header>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> TU ESTRATEGIA. TU PARTIDA.</div>
+        <h1>Crece.<br>Sobrevive.<br><span>Elegí cuándo salir.</span></h1>
+        <p>Masa para competir. Doradas para acumular saldo.<br>Una decisión más antes de que termine el reloj.</p>
+        <a class="button button-primary" href="#salas">Explorar salas <span>↓</span></a>
+        <div class="hero-foot"><span>◷ 5 minutos por partida</span><span>◎ Normal y Hard</span></div>
+      </div>
+      <div class="orb-scene" aria-hidden="true">
+        <div class="scene-grid"></div>
+        <div class="scene-chip chip-top">DOS RECURSOS. UNA ESTRATEGIA.</div>
+        <div class="orb orb-main"><span>AGARMON</span><strong>Masa</strong><small>CRECER PARA COMPETIR</small></div>
+        <div class="orb orb-small"></div><div class="orb orb-tiny"></div>
+        <i class="pellet pellet-one"></i><i class="pellet pellet-two"></i><i class="pellet pellet-three"></i><i class="pellet pellet-four"></i><i class="pellet pellet-five"></i>
+        <div class="scene-chip chip-bottom"><span class="gold-dot"></span> DORADAS <span>Saldo de partida</span></div>
+      </div>
+    </section>
+
+    <section class="wallet-section" id="billetera" aria-labelledby="wallet-title">
+      <div class="wallet-main"><div class="eyebrow" id="wallet-title">TU BILLETERA DE PRUEBA</div><div class="balance" id="balance">USD 0,00</div><div class="wallet-details"><span>Reservado en salas <strong id="reserved">USD 0,00</strong></span><span>Retiros pendientes <strong id="pending-total">USD 0,00</strong></span></div></div>
+      <div class="wallet-actions"><p id="wallet-hint">Ingresá para probar entradas y movimientos.</p><button id="funds-button" class="button button-primary">＋ Agregar USD 100 de prueba</button><button id="withdraw-button" class="button button-outline">Simular un retiro <span>↗</span></button></div>
+    </section>
+    <div id="pending-withdrawals" class="pending-list"></div>
+
+    <section class="rooms-section" id="salas" aria-labelledby="rooms-title">
+      <div class="section-heading"><div><div class="eyebrow">ELEGÍ TU FORMA DE JUGAR</div><h2 id="rooms-title">Las salas</h2></div><div class="segmented" aria-label="Filtrar salas"><button data-mode="all" class="selected" aria-pressed="true">Todas</button><button data-mode="normal" aria-pressed="false">Normal</button><button data-mode="hard" aria-pressed="false">Hard</button></div></div>
+      <div class="room-grid" id="room-grid" aria-live="polite"></div>
+      <p class="room-note"><span>ⓘ</span> En esta etapa podés reservar y devolver la entrada. La arena multijugador se conecta en la siguiente versión.</p>
+    </section>
+
+    <section class="bottom-grid">
+      <article class="rules-panel"><div class="eyebrow">LAS REGLAS, A LA VISTA</div><h2>Cada movimiento cuenta.</h2><div class="rule-row"><span class="rule-number">01</span><div><h3>Entrás con la mitad</h3><p>50% como saldo inicial, 25% en doradas y 25% de comisión.</p></div></div><div class="rule-row"><span class="rule-number">02</span><div><h3>Comer redistribuye el saldo</h3><p>75% para el atacante. El otro 25% vuelve al mundo.</p></div></div><div class="rule-row"><span class="rule-number">03</span><div><h3>El reloj decide el cierre</h3><p>Los supervivientes cobran su saldo. Las doradas restantes quedan para la casa.</p></div></div></article>
+      <article class="history-panel" id="movimientos"><div class="section-heading compact"><h2>Movimientos</h2><span class="small-tag">USD DE PRUEBA</span></div><div id="history"><p class="empty">Tu historial empieza con el primer movimiento.</p></div></article>
+    </section>
+    <footer><a class="brand" href="#inicio">Agar<span class="brand-accent">Mon</span></a><span>Primera versión web · Sandbox</span><a href="#salas">Volver a las salas ↑</a></footer>
+  </main>
+
+  <dialog id="auth-dialog"><form id="auth-form"><div class="dialog-heading"><span class="eyebrow">TU CUENTA AGARMON</span><button class="icon-button" type="button" data-close="auth-dialog" aria-label="Cerrar">×</button></div><h2 id="auth-title">Volvé a la partida.</h2><div class="segmented auth-tabs"><button type="button" data-auth="login" class="selected">Ingresar</button><button type="button" data-auth="register">Crear cuenta</button></div><label id="name-label" hidden>Nombre<input id="name-input" name="name" minlength="2" maxlength="40" autocomplete="nickname"></label><label>Correo<input name="email" type="email" required autocomplete="email" maxlength="254"></label><label>Contraseña<input id="password-input" name="password" type="password" required minlength="12" maxlength="128" autocomplete="current-password" placeholder="Al menos 12 caracteres"></label><p class="form-error" id="auth-error" role="alert"></p><button class="button button-primary full" type="submit" id="auth-submit">Ingresar</button><p class="fine-print">Cuenta de prueba. No se verifica identidad ni se habilitan pagos reales en esta versión.</p></form></dialog>
+  <dialog id="withdraw-dialog"><form id="withdraw-form"><div class="dialog-heading"><span class="eyebrow">RETIRO SIMULADO</span><button class="icon-button" type="button" data-close="withdraw-dialog" aria-label="Cerrar">×</button></div><h2>Probá el flujo de retiro.</h2><p class="dialog-copy">El saldo queda reservado hasta que confirmes el resultado de la prueba. No se envía dinero.</p><label>Monto en USD<input name="amount" type="text" inputmode="decimal" placeholder="10,00" required></label><p class="form-error" id="withdraw-error" role="alert"></p><button class="button button-primary full" type="submit">Reservar retiro de prueba</button></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
